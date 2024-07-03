@@ -1,0 +1,73 @@
+for each  page in {1}
+{
+	projetos = invokeurl
+	[
+		url :"https://recruit.zoho.eu/recruit/v2/JobOpenings"
+		type :GET
+		parameters:{"page":page,"per_page":100,"cvid":49186000013919039}
+		connection:"zohoconection"
+	];
+	if(projetos == "" || projetos == null)
+	{
+		continue;
+	}
+	projetos = projetos.getJSON("data");
+	for each  projeto in projetos
+	{
+		// 		info projeto ;
+		idProjeto = projeto.getJSON("id");
+		info idProjeto;
+		posicaoProjeto = projeto.getJSON("Job_Opening_Name");
+		info posicaoProjeto;
+		empresaName = projeto.getJSON("Client_Name").getJSON("name");
+		info empresaName;
+		contemNomeEmpresa = posicaoProjeto.contains(empresaName);
+		info contemNomeEmpresa;
+		if(posicaoProjeto.contains(empresaName))
+		{
+			newName = posicaoProjeto.replaceAllIgnoreCase("- " + empresaName,"");
+			info newName;
+			// Update
+			listaUpdate = List();
+			dados = Map();
+			dados.put("id",projeto.getJSON("id"));
+			dados.put("Job_Opening_Name",newName);
+			dados.put("UpdateName",true);
+			listaUpdate.add(dados);
+			data = Map();
+			data.put("data",listaUpdate);
+			dataString = data.toString();
+			info dataString;
+			updatedProjetos = invokeurl
+			[
+				url :"https://recruit.zoho.eu/recruit/v2/JobOpenings"
+				type :PUT
+				parameters:dataString
+				connection:"zohoconection"
+			];
+			info updatedProjetos;
+		}
+		else
+		{
+			// Update
+			listaUpdate = List();
+			dados = Map();
+			dados.put("id",projeto.getJSON("id"));
+			dados.put("UpdateName",true);
+			listaUpdate.add(dados);
+			data = Map();
+			data.put("data",listaUpdate);
+			dataString = data.toString();
+			info dataString;
+			updatedProjetos = invokeurl
+			[
+				url :"https://recruit.zoho.eu/recruit/v2/JobOpenings"
+				type :PUT
+				parameters:dataString
+				connection:"zohoconection"
+			];
+			// 			info updatedProjetos ;
+		}
+	}
+}
+return "";
