@@ -1,0 +1,17 @@
+mapa = Map();
+info proprietarioManutencao;
+//(API Name = Campo a ser populado, valor a ser inserido - Edit Argument ou getRecordByID > getJSON)
+mapa.put("Owner",proprietarioManutencao);
+mapa.put("Data_Prev_Manutencao",dataPrevManutencao);
+mapa.put("Localidade_Cidade",localidadeCidade);
+mapa.put("Num_Manutencao",numManutencao);
+mapa.put("Folha_de",folhaDe);
+mapa.put("Tipo_de_contrato",tipoContrato);
+mapa.put("Conta_Cliente",idCliente);
+mapa.put("Localidade_Rua",localidadeRua);
+mapa.put("Localidade_Cod_Postal",localidadeCodPostal);
+mapa.put("Name",assunto);
+mapa.put("Manutencao",idManutencao);
+mapa.put("Volta",volta);
+response = zoho.crm.createRecord("Planejamentos",mapa);
+info response;
