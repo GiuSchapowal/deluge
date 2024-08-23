@@ -1,0 +1,44 @@
+if(input.Criar_Novo_Local == true)
+{
+	if(input.Sincronizar_com_CRM_local == true)
+	{
+		
+		local = input.Local1;
+		morada = input.Morada_do_Local.address_line_1;
+		query = "(Local:equals:"+ local + ")and(Morada:equals:"+ morada +")";
+		locais = zoho.crm.searchRecords("Locais", query);
+		if ( locais.size() > 0 ) 
+        {
+			info "Local e a Morada já existem";
+			return ;
+        }
+		
+		createMap = Map();
+		createMap.put("Local",input.Local1);
+		createMap.put("Morada",input.Morada_do_Local.address_line_1);
+		createMap.put("Localidade",input.Morada_do_Local.district_city);
+		createMap.put("Pais",input.Morada_do_Local.country);
+		createMap.put("CodigoPostal",input.Morada_do_Local.postal_Code);
+		coords = input.Morada_do_Local.latitude + "," + input.Morada_do_Local.longitude;
+		createMap.put("CoordenadasGPS",coords);
+		if(input.Cliente != null)
+		{
+			if(input.Cliente.ID_Conta_CRM != "")
+			{
+				idConta = input.Cliente.ID_Conta_CRM;
+			}
+		}
+		if(input.Resultados_da_Pesquisa != null && input.Resultados_da_Pesquisa != "")
+		{
+			idConta = input.Resultados_da_Pesquisa;
+			idConta = idConta.replaceAll("\(","");
+			idConta = idConta.replaceAll("\)","");
+			idConta = idConta.right(18);
+		}
+		if(idConta != "" && idConta != null)
+		{
+			createMap.put("Cliente",idConta.toLong());
+			createContactCRM = zoho.crm.createRecord("Locais",createMap);
+		}
+	}
+}
