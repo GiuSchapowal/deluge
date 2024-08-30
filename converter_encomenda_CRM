@@ -1,0 +1,63 @@
+info idProposta;
+record = zoho.crm.getRecordById("Quotes",idProposta);
+// info record;
+estadoProposta = record.getJson("Quote_Stage");
+if(estadoProposta != "Proposta Aprovada")
+{
+	return "A proposta não está aprovada.";
+}
+if(record.getJson("Converter_Encomenda") == true)
+{
+	return "A encomenda já foi criada.";
+}
+mapa = Map();
+mapa.put("Converter_Encomenda",true);
+response = zoho.crm.updateRecord("Quotes",idProposta,mapa,{"trigger":{"workflow","blueprint","approval"}});
+// idCliente = record.getJson("Account_Name").getJson("id");
+// assunto = record.getJson("Subject");
+// tipoProposta = record.getJson("Tipo_de_Proposta");
+// nomeContacto = record.getJson("Contact_Name");
+// moeda = record.getJson("Currency");
+// notasProposta = record.getJson("Notas_da_Proposta");
+// nVeiculo = record.getJson("Dimens_o_de_Frota");
+// nomeOportunidade = record.getJson("Deal_Name").getJson("id");
+// taxaCambio = record.getJson("Exchange_Rate");
+// cidadeFaturacao = record.getJson("Billing_City");
+// ruaFaturacao = record.getJson("Billing_Street");
+// codPostalFaturacao = record.getJson("Billing_Code");
+// paisFaturacao = record.getJson("Billing_Country");
+// nomeProducto = record.getJson("Product_Details");
+// // info "idCliente " + idCliente;
+// // info "assunto " + assunto;
+// // info "tipoProposta " + tipoProposta;
+// // info "nomeContacto " + nomeContacto;
+// // info "moeda " + moeda;
+// // info "notasProposta " + notasProposta;
+// // info "nVeiculo " + nVeiculo;
+// // info "nomeOportunidade " + nomeOportunidade;
+// // info "taxaCambio " + taxaCambio;
+// // info "cidadeFaturacao " + cidadeFaturacao;
+// // info "ruaFaturacao " + ruaFaturacao;
+// // info "codPostalFaturacao " + codPostalFaturacao;
+// // info "paisFaturacao " + paisFaturacao;
+// // info "nomeProducto" + nomeProducto;
+// mapEncomenda = Map();
+// mapEncomenda.put("Account_Name",idCliente);
+// mapEncomenda.put("Subject",assunto);
+// mapEncomenda.put("Tipo_de_Proposta",tipoProposta);
+// mapEncomenda.put("Contact_Name",nomeContacto);
+// mapEncomenda.put("Currency",moeda);
+// mapEncomenda.put("Notas_da_Proposta",notasProposta);
+// mapEncomenda.put("Dimens_o_de_Frota",nVeiculo);
+// mapEncomenda.put("Deal_Name",nomeOportunidade);
+// mapEncomenda.put("Exchange_Rate",taxaCambio);
+// mapEncomenda.put("Billing_City",cidadeFaturacao);
+// mapEncomenda.put("Billing_Street",ruaFaturacao);
+// mapEncomenda.put("Billing_Code",codPostalFaturacao);
+// mapEncomenda.put("Billing_Country",paisFaturacao);
+// mapEncomenda.put("Product_Details",nomeProducto);
+// mapEncomenda.put("Quote_Name",idProposta);
+// mapEncomenda.put("Status","Criado(a)");
+// response = zoho.crm.createRecord("Sales_Orders",mapEncomenda,{"trigger":{"workflow","blueprint","approval"}});
+// info response;
+return "Encomenda criada";
