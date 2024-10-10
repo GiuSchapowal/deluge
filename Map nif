@@ -1,0 +1,29 @@
+// Obter o registro do membro
+membroClientId = zoho.crm.getRecordById("Accounts",idRegisto);
+info membroClientId;
+// Exibir o nome da conta do membro
+nomeContaMembro = membroClientId.get("Account_Name");
+info nomeContaMembro;
+// Obter o NIF do membro
+nifMembro = membroClientId.get("NIPC");
+info nifMembro;
+// Obter a conta principal
+parentAccount = membroClientId.getJSON("Parent_Account");
+info parentAccount;
+// Obter o nome da conta principal
+nomeContaClientePrincipal = parentAccount.get("name");
+info nomeContaClientePrincipal;
+// ID do registro Conta Principal
+idContaPrincipal = parentAccount.get("id");
+info idContaPrincipal;
+// Obter o registro da conta principal
+contaPrincipal = zoho.crm.getRecordById("Accounts",idContaPrincipal);
+// Obter o NIF da conta principal
+nifClientePrincipal = contaPrincipal.get("NIPC");
+info nifClientePrincipal;
+// Atualizar o NIF do membro com o NIF da conta principal
+updateMap = Map();
+updateMap.put("NIPC",nifClientePrincipal);
+// Define o novo NIF
+// Chama a API para atualizar o registro do membro
+updateResponse = zoho.crm.updateRecord("Accounts",membroClientId.get("id"),updateMap,{"trigger":{"workflow","blueprint","approval"}});
